@@ -4,7 +4,7 @@ import axios from 'axios';
 function WeatherWidget() {
     const [city, setCity] = useState('');
     const [weather, setWeather] = useState(null);
-    const API_KEY = '1c10f865692eb67b929aea80571d569a';
+    const API_KEY = '1c10f865692eb67b929aea80571d569a'
 
     const handleInputChange = (event) => {
         setCity(event.target.value);
@@ -18,7 +18,7 @@ function WeatherWidget() {
         } catch (error) {
             console.error(error);
         }
-    };
+    };  
 
     return (
         <div className="weather-widget">
