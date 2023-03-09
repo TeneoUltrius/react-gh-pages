@@ -14,24 +14,37 @@ function MyComponent() {
         const res = await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${item.lat}&longitude=${item.lon}&localityLanguage=en`);
         return {
           ...item,
-          city: res.data.locality
+          city: res.data.locality,
+          country: res.data.countryName
         };
       });
-      const dataWithCity = await Promise.all(promises);
-      setData(dataWithCity);
+
+      const uniqueCities = {};
+      const dataWithCityAndCountry = [];
+
+      const results = await Promise.all(promises);
+
+      results.forEach((item) => {
+        if (!uniqueCities[item.city]) {
+          uniqueCities[item.city] = true;
+          dataWithCityAndCountry.push(item);
+        }
+      });
+
+      setData(dataWithCityAndCountry);
     });
   }, []);
 
   return (
     <div>
-      <h1>Data</h1>
-      <ul>
+      <h1>Worst 10 places by the Air Quality so far</h1>
+      <div>
         {data.map((item) => (
-          <li key={item.uid}>
-            {item.city} - AQI: {item.aqi}
-          </li>
+          <p key={item.uid}>
+            {item.city}, <strong>{item.country}</strong> - AQI: {item.aqi}
+          </p>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
